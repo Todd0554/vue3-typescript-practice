@@ -46,7 +46,10 @@ const validatePhoneNumber = ()=>{
     if (!phone.value){
         phoneError.value = "phone number can't be empty!"
         return false
-    } else if (!/^(?:\+?(61))? ?(?:\((?=.*\)))?(0?[2-57-8])\)? ?(\d\d(?:[- ](?=\d{3})|(?!\d\d[- ]?\d[- ]))\d\d[- ]?\d[- ]?\d{3})$/.test(phone.value)){
+    } else if (
+        // Australian phone number regex
+        !/^(?:\+?(61))? ?(?:\((?=.*\)))?(0?[2-57-8])\)? ?(\d\d(?:[- ](?=\d{3})|(?!\d\d[- ]?\d[- ]))\d\d[- ]?\d[- ]?\d{3})$/.test(phone.value)
+        ){
         phoneError.value = "this number is not validated!"
         return false
     } else {
