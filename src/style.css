@@ -55,7 +55,7 @@ body {
 .login-component .login-btn button {
   width: 100%;
   height: 40px;
-  background-color: #e7e324;
+  background-color: #e4e124;
   border-radius: 4px;
   color: white;
   font-size: 14px;
@@ -64,7 +64,7 @@ body {
 }
 
 .login-component .login-btn button[disabled] {
-  background-color: #e7e324;
+  background-color: #a3a3a3;
 }
 
 .login-component .input-group {
