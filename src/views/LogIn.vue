@@ -23,7 +23,7 @@
             <p>I agree <span>User Service Protocol</span></p>
         </div>
         <div class="login-btn">
-            <button :disabled="isClick" @click="handleClick">Log in</button>
+            <button :disabled="isClick" @click="handleLogIn">Log in</button>
         </div>
     </div>
 </template>
@@ -32,15 +32,18 @@
 import { ref,computed } from 'vue'
 import InputGroup from '@/components/InputGroup.vue';
 import axios from '../api/index'
+import {useRouter} from 'vue-router'
 
 // react attribute
-const phone = ref("")
+const phone = ref("15679671921")
 const btnTitle = ref("Get SMS Code")
 const disabled = ref(false)
 const phoneError = ref("")
 
-const verifyCode = ref("")
+const verifyCode = ref("542972")
 const codeError = ref("")
+
+const router = useRouter()
 
 // computed attribute
 const isClick = computed(()=>{
@@ -50,10 +53,29 @@ const isClick = computed(()=>{
 
 
 // method
-const handleClick = ()=>{
+const handleLogIn = async ()=>{
     // log in and navigate to another router
-    console.log(phone.value)
-    console.log(verifyCode.value)
+    phoneError.value = "";
+    codeError.value = "";
+    // check the sms code
+    try {
+        const res = await axios.post("/api/posts/sms_back", {
+        phone: phone.value,
+        code: verifyCode.value
+        })
+        if (res.data.msg === '验证成功'){
+            // save token then navigate
+            console.log(res.data)
+            localStorage.setItem("token", res.data.user._id)
+            router.push('/')
+        }
+    } catch (error:any) {
+        console.log(error)
+        if (error.response.data.msg === "验证码有误"){
+            codeError.value = "incorrect verify code"
+        }
+        
+    }
 }
 
 const validatePhoneNumber = ()=>{
@@ -96,6 +118,7 @@ const getVerifyCode = async ()=>{
         await axios.post("/api/posts/sms_send", {
             phone: phone.value
         })
+        // 15679671921
         // 542972
     }
 }
